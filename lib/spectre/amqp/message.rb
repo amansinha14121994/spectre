@@ -5,7 +5,7 @@ module Spectre
     class Message
 
       DEFAULT_CONTENT_TYPE = 'application/json'
-      VALID_EXCHANGE_TYPES = {
+      EXCHANGE_TYPES = {
           topic: :topic,
           fanout: :fanout,
           direct: :direct,
@@ -43,7 +43,7 @@ module Spectre
       private
 
       def validate(exchange_type)
-        raise InvalidExchangeType, "Invalid MQ Exchange type #{exchange_type}" unless exchange_type.present? && VALID_EXCHANGE_TYPES.key?(exchange_type.to_sym)
+        raise InvalidExchangeType, "Invalid MQ Exchange type #{exchange_type}" unless exchange_type.present? && EXCHANGE_TYPES.key?(exchange_type.to_sym)
       end
 
     end

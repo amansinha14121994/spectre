@@ -18,7 +18,7 @@ module Spectre
 
       def initialize(url, request_method,	request_headers, request_body, request_options)
         self.uri = URI(url)
-        self.method = request_method.strip.downcase
+        self.method = request_method
         self.headers = request_headers || {}
         self.body = request_body
         self.options = request_options || {}
@@ -27,13 +27,18 @@ module Spectre
       def perform
         validate_request_method
         construct_request_options
+        construct_headers
         request_class = Kernel.const_get("Net::HTTP::#{self.method.to_s.capitalize}")
         request = request_class.new(self.uri.path, self.headers)
-        request.body = self.body
+        request.body = self.body.to_json unless self.body.nil?
         begin
-          response = Net::HTTP.start(self.uri.host, self.uri.port, self.options) do |http|
+          http_response = Net::HTTP.start(self.uri.host, self.uri.port, self.options) do |http|
             http.request(request)
           end
+          response = RESPONSE.new
+          data = JSON.parse(http_response.body)
+          response.body = data.transform_keys(&:to_sym)
+          response.code = http_response.code.to_i
         rescue => e
           response = error_response(e)
         end
@@ -56,8 +61,12 @@ module Spectre
         end
       end
 
+      def construct_headers
+        self.headers
+      end
+
       def validate_request_method
-        unless VALID_REQUEST_METHODS.include?(self.method.to_s)
+        unless VALID_REQUEST_METHODS.include?(self.method.to_sym)
           raise InvalidRequestMethodError.new("The request method #{self.method} is invalid!")
         end
       end
