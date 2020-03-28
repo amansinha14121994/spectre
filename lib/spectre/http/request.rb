@@ -36,8 +36,7 @@ module Spectre
             http.request(request)
           end
           response = RESPONSE.new
-          data = JSON.parse(http_response.body)
-          response.body = data.transform_keys(&:to_sym)
+          response.body = JSON.parse(http_response.body, symbolize_names: true)
           response.code = http_response.code.to_i
         rescue => e
           response = error_response(e)
