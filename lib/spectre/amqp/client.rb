@@ -2,18 +2,21 @@ module Spectre
   module Amqp
     class Client
 
-      CONFIG = Struct.new(:host, :vhost, :user, :password)
+      CONFIG = Struct.new(:host, :port, :vhost, :user, :password)
 
       def initialize(mq_config = {})
         @config = CONFIG.new
         @config.host = mq_config[:host]
+        @config.port = mq_config[:port]
+        @config.vhost = mq_config[:vhost]
         @config.user = mq_config[:user]
         @config.password = mq_config[:password]
+        set_mq_connection
       end
 
       private
 
-      def set_connection
+      def set_mq_connection
         Spectre.amqp_configuration = @config.to_h
         Spectre::Amqp::Connection.establish!
       end
