@@ -23,8 +23,8 @@ module Spectre
       end
 
       def publish
-        print "Spectre Message Object - #{self.inspect}"
-        print "Spectre Connection Object - #{self.connection.inspect}"
+        p "Spectre Message Object - #{self.inspect}"
+        p "Spectre Connection Object - #{self.connection.inspect}"
         with_channel do |channel|
           exchange = Bunny::Exchange.new(channel, @exchange_type, @exchange, durable: true)
           exchange.publish(@message, routing_key: @routing_key, content_type: @content_type, headers: @headers)
