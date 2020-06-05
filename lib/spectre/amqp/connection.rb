@@ -22,21 +22,21 @@ module Spectre
             @instance = new
           end
         end
-
-        def channel
-          unless $rabbitmq_channel.present? && $rabbitmq_channel.open?
-            p "Establishing connection"
-            establish!
-            $rabbitmq_channel = connection.create_channel
-          end
-          $rabbitmq_channel
-        end
       end
 
       def connected?
         singleton_mutex.synchronize do
           singleton_connection.present? && singleton_connection.connected?
         end
+      end
+
+      def channel
+        unless $rabbitmq_channel.present? && $rabbitmq_channel.open?
+          p "Establishing connection"
+          establish!
+          $rabbitmq_channel = connection.create_channel
+        end
+        $rabbitmq_channel
       end
 
       private
