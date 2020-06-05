@@ -32,13 +32,10 @@ module Spectre
       end
 
       def with_channel
-        channel = self.channel
+        channel = connection.create_channel
         message = yield channel
+        channel.close
         message
-      end
-
-      def channel
-        Spectre::Amqp::Connection.channel
       end
 
       def connection
