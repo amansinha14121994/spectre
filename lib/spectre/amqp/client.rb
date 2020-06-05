@@ -19,6 +19,9 @@ module Spectre
       def set_mq_connection
         Spectre.amqp_configuration = @config.to_h
         Spectre::Amqp::Connection.establish!
+        connection = Spectre::Amqp::Connection.connection
+        connection.start
+        $rabbitmq_channel = connection.create_channel
       end
 
     end

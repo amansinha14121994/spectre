@@ -30,6 +30,15 @@ module Spectre
         end
       end
 
+      def channel
+        unless $rabbitmq_channel.present? && $rabbitmq_channel.open?
+          p "Establishing connection"
+          establish!
+          $rabbitmq_channel = connection.create_channel
+        end
+        $rabbitmq_channel
+      end
+
       private
 
       def initialize
