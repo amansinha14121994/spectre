@@ -2,6 +2,8 @@ module Spectre
   module Amqp
     class Client
 
+      attr_reader :config
+
       CONFIG = Struct.new(:host, :port, :vhost, :user, :password)
 
       def initialize(mq_config = {})
