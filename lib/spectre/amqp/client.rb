@@ -13,7 +13,6 @@ module Spectre
         @config.vhost = mq_config[:vhost]
         @config.user = mq_config[:user]
         @config.password = mq_config[:password]
-        set_mq_connection
       end
 
       private
