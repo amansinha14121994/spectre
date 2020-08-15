@@ -6,8 +6,8 @@ module Spectre
 
       attr_accessor :uri, :headers, :body, :method, :options
 
-      DEFAULT_OPEN_TIMEOUT = 60.freeze
-      DEFAULT_READ_TIMEOUT = 60.freeze
+      DEFAULT_OPEN_TIMEOUT = 3.freeze
+      DEFAULT_READ_TIMEOUT = 3.freeze
       VALID_REQUEST_METHODS = %i[get post put patch delete].freeze
       GET = :get
       POST = :post
